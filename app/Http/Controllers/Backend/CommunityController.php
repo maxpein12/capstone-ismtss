@@ -15,9 +15,9 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        return 'ok';
+        $communities = Community::all();
+        return Inertia::render('Communities/Index', compact('communities'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

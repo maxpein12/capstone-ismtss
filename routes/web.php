@@ -30,9 +30,7 @@ Route::get('/p/{community_slug}/posts/{post:slug}', [PostController::class, 'sho
 
 Route::group(['middleware' => ['auth', 'verified']], function(){
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+  
 
    
 
@@ -41,8 +39,8 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::resource('/dashboard/communities', CommunityController::class);
-        Route::resource('/dashboard/communities.posts', CommunityPostController::class);
+        Route::resource('/communities', CommunityController::class);
+        Route::resource('/communities.posts', CommunityPostController::class);
 
     });
 

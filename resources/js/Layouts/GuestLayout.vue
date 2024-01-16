@@ -34,7 +34,7 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
+                            <div class="ms-3 relative" v-if="$page.props.auth.auth_check">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -71,6 +71,20 @@ const showingNavigationDropdown = ref(false);
                                     </template>
                                 </Dropdown>
                             </div>
+                            <template v-else>
+                <Link
+                    :href="route('login')"
+                    class="text-sm text-gray-700 underline"
+                    >Log in</Link
+                >
+
+                <Link
+                  
+                    :href="route('register')"
+                    class="ml-4 text-sm text-gray-700 underline"
+                    >Register</Link
+                >
+            </template>
                         </div>
 
                         <!-- Hamburger -->

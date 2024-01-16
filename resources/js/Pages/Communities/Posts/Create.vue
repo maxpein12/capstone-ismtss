@@ -4,7 +4,7 @@
     
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Community</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Post for {{ community.name }}</h2>
         </template>
     
         <div class="py-12">

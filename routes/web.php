@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 
 Route::get('/p/{slug}', [FrontendCommunityController::class, 'show'])->name('frontend.communities.show');
+Route::get('/p/{community_slug}/posts/{post:slug}', [PostController::class, 'show'])->name('frontend.communities.posts.show');
 
 
 Route::group(['middleware' => ['auth', 'verified']], function(){

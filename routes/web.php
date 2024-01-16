@@ -14,15 +14,7 @@ use App\Http\Controllers\Frontend\WelcomeController;
 
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
+Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 
 Route::get('/p/{slug}', [FrontendCommunityController::class, 'show'])->name('frontend.communities.show');
 Route::get('/p/{community_slug}/posts/{post:slug}', [PostController::class, 'show'])->name('frontend.communities.posts.show');
@@ -43,27 +35,13 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
         Route::resource('/communities', CommunityController::class);
         Route::resource('/communities.posts', CommunityPostController::class);
 
+        Route::post('/posts/{post:slug}/upVote', [PostVoteController::class, 'upVote'])->name('posts.upVote');
+        Route::post('/posts/{post:slug}/downVote', [PostVoteController::class, 'downVote'])->name('posts.downVote');
+
     });
 
 
-    // Route::group(['middleware' => ['auth', 'verified']], function(){
-
-    //     Route::get('/dashboard', function () {
-    //         return Inertia::render('Dashboard');
-    //     })->name('dashboard');
-
-    //     Route::resource( name: '/dashboard/communities', controller:CommunityController::class);
-
-    //     Route::resource('/communities.posts', CommunityPostController::class);
-        
-    //     // Route::resource('/communities', controller:CommunityController::class);
-    //     // Route::resource('/communities.posts', CommunityPostController::class);
-    //     // Route::post('/posts/{post:slug}/upVote', [PostVoteController::class, 'upVote'])->name('posts.upVote');
-    //     // Route::post('/posts/{post:slug}/downVote', [PostVoteController::class, 'downVote'])->name('posts.downVote');
-    // });
-    
-
-    // Route::resource('/dashboard/communities', CommunityController::class);
+   
 
 });
 

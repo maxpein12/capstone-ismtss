@@ -4,24 +4,29 @@
           
     <section class=" flex flex-col md:flex-row m-2 p-2 ">
       <div class="w-full md:w-8/12">
-        <div class="m-2 p-2 bg-white">
+        <div class="mx-2 p-2 bg-white rounded-lg">
             <h2 class="font-semibold text-2xl text-black">
                 <Link :href="route('frontend.communities.show', community.slug)">
                 p/{{ community.name }}
                 </Link>
         </h2>
         </div>
-        <div class="m-2 p-2 bg-white text-sm text-slate-400">
-            <div class="flex flex-col md:flex-row justify-between m-2">
+        <div class="flex m-2 bg-white rounded-lg text-sm text-slate-400">
+         <div>
+          <PostVote :post="post.data"/>
+         </div>
+         <div class="w-full">   
+          <div class="flex flex-col md:flex-row justify-between m-2">
                 <div>
                     Posted by 
             <span class="ml-2 text-slate-700">{{post.data.username}}</span>
+            {{ post.data.created_at }}
                 </div>
-            <div v-if="$page.props.auth.auth_check && post.data.owner">
-                <Link :href="route('communities.posts.edit', [community.slug, post.data.slug])"
+            <div v-if="$page.props.auth.auth_check">
+                <Link v-if="can_update" :href="route('communities.posts.edit', [community.slug, post.data.slug])"
                 class="font-semibold bg-blue-500 hover:bg-blue-700 rounded-md text-white px-4 py-2 mr-2"
                 >Edit</Link>
-                <Link :href="route('communities.posts.destroy', [community.slug, post.data.slug])"
+                <Link v-if="can_delete" :href="route('communities.posts.destroy', [community.slug, post.data.slug])"
                 class="font-semibold bg-red-500 hover:bg-red-700 rounded-md text-white px-4 py-2"  method="delete" as="button" type="button"
                 >Delete</Link>
             </div>
@@ -88,13 +93,13 @@
                   </button>
                 </div>
     </form>
-  </div>
+  </div></div>
 </div>
    </div>
-   <div class="w-full md:w-4/12 p-4">
-    <div class="m-2 p-2 bg-slate-500 text-white">
-      <h2>Lastest Commmunities</h2>
-    </div>
+   <div class="w-full md:w-4/12">
+    <PostList :posts="posts.data" :community="community">
+    <template #title>Popular Posts</template>
+    </PostList>
    </div>
     
     
@@ -108,11 +113,15 @@
     import PostCard from "@/Components/PostCard.vue";
     import { Link, useForm } from "@inertiajs/vue3";
     import Pagination from "@/Components/Pagination.vue";
-    // import CommunityList from "@/Components/CommunityList.vue"
+    import PostVote from "@/Components/PostVote.vue";
+    import CommunityList from "@/Components/CommunityList.vue";
+    import PostList from "@/Components/PostList.vue"
     const props = defineProps({
   community: Object,
   post: Object,
   posts: Object,
+  can_delete: Boolean,
+  can_update: Boolean,
 
 });
     const form = useForm({

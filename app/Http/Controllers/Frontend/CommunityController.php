@@ -14,13 +14,14 @@ class CommunityController extends Controller
     function show($slug)
     {
         $community = Community::where('slug', $slug)->firstOrFail();
-        $posts = CommunityPostResource::collection($community->posts()->with('user')->paginate(3));
-        // ->withCount('comments')->paginate(3));
+        $posts = CommunityPostResource::collection($community->posts()->with(['user', 'postVotes' => function ($query) {
+            $query->where('user_id', auth()->id());
+        }])->withCount('comments')->paginate(3));
 
-        // $communities = CommunityResource::collection(Community::withCount('posts')->latest()->take(4)->get());
+        $communities = CommunityResource::collection(Community::withCount('posts')->latest()->take(4)->get());
 
        
 
-        return Inertia::render('Frontend/Communities/Show', compact('community', 'posts'));
+        return Inertia::render('Frontend/Communities/Show', compact('community', 'posts', 'communities'));
     }
 }
